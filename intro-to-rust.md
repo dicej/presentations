@@ -4,7 +4,7 @@ class: center, middle, inverse
 ---
 # Intro to Rust
 
-Safe, efficient, and practical
+Safe, efficient, practical: pick any three
 
 ---
 layout: false
@@ -108,7 +108,7 @@ layout: false
 
 --
 
-* no implicit copies by default
+* no implicit copies by default (instead: move, slice, or borrow)
 
 ---
 .left-column[
@@ -358,12 +358,38 @@ fn main() {
 
 --
 
-* hygenic macros
-{{content}}
+* friendly community
+
+---
+## Other Features
 
 --
 
-* friendly community
+* expression-oriented
+
+--
+
+* generic
+
+--
+
+* traits (AKA interfaces, AKA typeclasses)
+
+--
+
+* functional
+    * algebraic data types
+    * pattern matching
+    * lambdas
+    * higher-order functions
+
+--
+
+* hygenic macros (i.e. no name collisions)
+
+--
+
+* open types (i.e. add new methods to existing types)
 
 ---
 ## Why not C++?
@@ -392,6 +418,7 @@ fn main() {
 
 * no dependency management
 
+
 ---
 ## Rust drawbacks
 
@@ -401,7 +428,7 @@ fn main() {
 
 --
 
-* relatively difficult to learn
+* steep learning curve
 
 --
 
@@ -434,3 +461,14 @@ fn main() {
 * doesn't play nice with C++ (yet)
 
 * still rough, but promising future
+
+---
+## Resources
+
+* https://rust-lang.org
+
+* https://play.rust-lang.org
+
+* https://reddit.com/r/rust
+
+* https://stackoverflow.com/questions/tagged/rust
