@@ -1,0 +1,99 @@
+* (ZATAOMM cover)
+
+* Agenda
+** What is poka-yoke?
+** Examples of poka-yoke in software development
+** Safe programming with Rust
+
+* (train image)
+
+* What is poka-yoke?
+** "mistake-proofing" or "inadvertent error prevention" (AKA "fool-proofing" and "defensive design")
+** Formalized by Toyota in the 1960s (picture of Shigeo Shingo)
+** Two types: "warning" and "control"
+** Everyday examples
+*** seatbelt alarms ("warning")
+*** spelling and grammar checkers ("warning")
+*** asymmetric plugs ("control")
+*** microwave oven door ("control")
+
+* Benefits in industry
+** Fewer mistakes and defects
+** Less time training workers
+** Reduced need for quality control
+** Increased productivity
+
+* Examples of poka-yoke in software development
+** Static analysis (e.g. linters, typecheckers)
+** Test-driven development
+** Pure functional programming
+** Turing-incomplete languages (e.g. total functional programming)
+** Safe APIs (i.e. compile-time safety)
+
+* API example
+** Unsafe API:
+
+// Parses the specified JSON document and extracts the requested field.
+// Returns nullptr if document is malformed or field not found.
+// Caller is responsible for deleting return value.
+Json::Value* GetJsonField(const string& document, const string& fieldName);
+
+** Safe(r) API:
+
+optional<not_null<unique_ptr<Json::Value>>> GetJsonField(const Json::Value& document, const string& fieldName);
+
+* Safe concurrency
+(include Clang thread safety example)
+
+* (rules of rust meme)
+
+* What is Rust?
+** Memory- and concurrency-safe programming language from Mozilla
+** Open source; community supported
+** "Most loved" language on StackOverflow for past three years
+
+* Rust guarantees
+** Memory-safe; i.e. no
+*** dangling pointers
+*** null pointers
+*** double frees
+*** uninitialized memory
+*** heap/stack corruption
+*** buffer overflows
+** Concurrency-safe
+*** No data races (concurrent reads and writes)
+*** No mutable globals
+** No undefined behavior
+** Type-safe; enables safe APIs
+** Deterministic resource management
+** Mutable access is exclusive access
+
+* What's not covered by the warranty:
+** Race conditions, deadlocks, and starvation still possible
+** Resources can be unecessarily retained or intentionally leaked
+** Misuse of `unsafe` keyword can break everything
+** Some APIs can panic
+** Application logic errors are your responsiblity
+
+* Pros
+** Portability
+** Performance
+** Productivity
+*** fewer tests needed
+*** less debugging
+*** faster code reviews
+*** mistakes caught early, when they're cheaper to fix
+** Modern dependency manager
+** Hygenic macro system
+** Zero-cost C interop
+
+* Cons
+** Annoying evangelism from people like me
+** Steep learning curve
+** Compile times can be long
+** Mental overhead compared to GC'd languages
+** C++ interoperability requires manual effort
+** Younger, smaller ecosystem
+** Asyncronous programming harder than it should be
+*** But still way easier than in most languages!
+** Jobs and candidates are relatively rare
