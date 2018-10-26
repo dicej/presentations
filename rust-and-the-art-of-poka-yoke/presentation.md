@@ -23,7 +23,7 @@ background-image: url(rust-poka-yoke.png)
 * "mistake-proofing" or "inadvertent error prevention"
     * AKA "fool-proofing" and "defensive design"
 
-* Formalized by Singeo Shingo at Toyota in the 1960s
+* Formalized by Shigeo Shingo at Toyota in the 1960s
 
 * Two types: "warning" and "control"
 
