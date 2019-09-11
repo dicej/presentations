@@ -76,7 +76,7 @@ layout: false
 
     * Pros: deterministic, minimal context switch overhead, low memory use
 
-    * Cons: single core, harder to program (but getting easier), stack traces not very useful
+    * Cons: single core, harder to program (but getting easier)
 
 --
 
@@ -118,6 +118,8 @@ layout: false
 * JavaScript: Promise
 
 * C#: Task/TaskCompletionSource
+
+* C++: std::future
 
 * Rust: futures::Future
 
@@ -178,6 +180,10 @@ layout: false
 
 * `fold`: reduce the values in a stream to a single value
 
+--
+
+* `unfold`: generate a stream of values from an asynchronous state machine
+
 ---
 # Code Example
 
@@ -186,26 +192,24 @@ layout: false
 /// URLs in parallel and send them to the specified sinks.
 pub fn download_all<C: Connect>(
     client: Client<C>,
-    urls_and_sinks: Vec<(Uri, Box<Sink<SinkItem = Chunk, SinkError = Error>>)>,
+    urls_and_sinks: Vec<(Uri, impl Sink<SinkItem = Chunk, SinkError = Error>)>,
     timeout: Duration,
-) -> Box<Future<Item = (), Error = Error>> {
+) -> impl Future<Item = (), Error = Error> {
     let timer = Timer::default();
 
-    Box::new(
-        join_all(urls_and_sinks.into_iter().map(move |(url, sink)| {
-            client
-                .get(url)
-                .from_err()
-                .and_then(|response| response.body().from_err().forward(sink))
-                .select(
-                    timer
-                        .sleep(timeout)
-                        .from_err()
-                        .and_then(|_| err(format_err!("request timeout"))),
-                )
-                .map_err(|(e, _)| e)
-        })).map(drop),
-    )
+    join_all(urls_and_sinks.into_iter().map(move |(url, sink)| {
+        client
+            .get(url)
+            .from_err()
+            .and_then(|response| response.body().from_err().forward(sink))
+            .select(
+                timer
+                    .sleep(timeout)
+                    .from_err()
+                    .and_then(|_| err(format_err!("request timeout"))),
+            )
+            .map_err(|(e, _)| e)
+    })).map(drop)
 }
 ```
 
@@ -250,32 +254,28 @@ Low-level cross-platform, non-blocking I/O abstraction for TCP and UDP
 Current, combinator style:
 
 ```rust
-type StringFuture = Box<Future<Item = String, Error = Error>>;
-
-pub fn fetch_rust_lang<C: Connect>(client: Client<C>) -> StringFuture {
-    Box::new(
-        result("https://www.rust-lang.org".parse())
-            .from_err()
-            .and_then(move |uri| {
-                client.get(uri).from_err().and_then(|response| {
-                    if response.status().is_success() {
-                        Box::new(
-                            response.body().concat2().from_err().and_then(
-                                |body| {
-                                    result(from_utf8(&body).map(str::to_string))
-                                        .from_err()
-                                },
-                            ),
-                        ) as StringFuture
-                    } else {
-                        Box::new(err(format_err!(
-                            "request failed with status: {}",
-                            response.status()
-                        )))
-                    }
-                })
-            }),
-    )
+pub fn fetch_rust_lang<C: Connect>(client: Client<C>) -> impl Future<Item = String, Error = Error> {
+    result("https://www.rust-lang.org".parse())
+        .from_err()
+        .and_then(move |uri| {
+            client.get(uri).from_err().and_then(|response| {
+                if response.status().is_success() {
+                    Box::new(
+                        response.body().concat2().from_err().and_then(
+                            |body| {
+                                result(from_utf8(&body).map(str::to_string))
+                                    .from_err()
+                            },
+                        ),
+                    ) as Box<dyn Future<Item = String, Error = Error>>
+                } else {
+                    Box::new(err(format_err!(
+                        "request failed with status: {}",
+                        response.status()
+                    )))
+                }
+            })
+        }),
 }
 ```
 
@@ -285,11 +285,10 @@ pub fn fetch_rust_lang<C: Connect>(client: Client<C>) -> StringFuture {
 Async/await style:
 
 ```rust
-#[async]
-fn fetch_rust_lang<C: Connect>(client: Client<C>) -> Result<String, Error> {
-    let response = await!(client.get("https://www.rust-lang.org".parse()?))?;
+async fn fetch_rust_lang<C: Connect>(client: Client<C>) -> Result<String, Error> {
+    let response = client.get("https://www.rust-lang.org".parse()?).await?;
     if response.status().is_success() {
-        let body = await!(response.body().concat2())?;
+        let body = response.body().concat2().await?;
         Ok(from_utf8(body)?.to_string())
     } else {
         Err(format_err!("request failed with status: {}", response.status()))
@@ -304,9 +303,9 @@ fn fetch_rust_lang<C: Connect>(client: Client<C>) -> Result<String, Error> {
 
 * The road to Futures 1.0: http://aturon.github.io/2018/02/27/futures-0-2-RC/
 
-* Async/Await: https://github.com/alexcrichton/futures-await
+* Progress towards async/await: https://areweasyncyet.rs/
 
-* In-progress book: _Asynchronous Programming in Rust_: https://aturon.github.io/apr/
+* In-progress book: _Asynchronous Programming in Rust_: https://rust-lang.github.io/async-book/
 
 * Tokio docs and how-tos: https://tokio.rs/
 

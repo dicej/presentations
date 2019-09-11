@@ -2,48 +2,35 @@ name: inverse
 layout: true
 class: center, middle, inverse
 ---
-# Intro to Rust
-
-Safe, efficient, practical: pick any three
+# Rust Learning Group Kickoff
 
 ---
 layout: false
 # Agenda
 
-* History
+* Intro to Rust
 
-* Features
+   * History
+   * Features
+   * Drawbacks
+   * Rust at Mersive
 
-* Rust vs. C++
+* Pick a time to meet
 
-* Rust at Mersive
+* Pick a book to read
 
 ---
 ## History
 
---
-
 * 2006: project started by Graydon Hoare
-
---
 
 * 2009: sponsored by Mozilla
 
---
-
 * 2012: first pre-alpha release: 0.1
-
---
 
 * 2015: first stable release: 1.0
 
---
-
-* 2016: "most loved" language on StackOverflow
-
---
-
-* 2017: ditto
+* 2016 - 2019: "most loved" language on StackOverflow
 
 ---
 ## Adoption
@@ -54,9 +41,9 @@ layout: false
 
 * Google: parts of ChromeOS and Fucshia
 
-* Facebook: Mononoke
+* Facebook: Mononoke, Libra
 
-* Microsoft: search feature in Visual Studio Code
+* Microsoft: parts of Azure, parts of Visual Studio Code, MSRC
 
 ---
 ## Features
@@ -84,54 +71,20 @@ layout: false
 .right-column[
 ## Fast
 {{content}}
-]
-
---
 
 * minimal runtime
 {{content}}
 
---
-
 * compiles to machine code
 {{content}}
-
---
 
 * no garbage collector
 {{content}}
 
---
-
 * static dispatch by default
 {{content}}
 
---
-
-* no implicit copies by default (instead: move, slice, or borrow)
-
----
-.left-column[
-## Features
-
-* .black[**fast**]
-
-* memory-safe
-
-* thread-safe
-
-* practical
-]
-.right-column[
-## Why not GC?
-
-* unpredictable pauses
-
-* 2x or more memory bloat
-
-* pointer heavy -> bad locality of reference
-
-* handles non-memory resources poorly
+* no implicit copies (instead: move, slice, or borrow)
 ]
 
 ---
@@ -149,26 +102,18 @@ layout: false
 .right-column[
 ## Memory-safe
 {{content}}
-]
-
---
 
 * single-owner move semantics by default
 {{content}}
 
---
-
 * non-nullable types
 {{content}}
-
---
 
 * safe borrowing via references
 {{content}}
 
---
-
 * reference counting
+]
 
 ---
 .left-column[
@@ -257,21 +202,15 @@ for i in &v.clone() {   // immutable borrow of clone created
 .right-column[
 ## Thread-safe
 {{content}}
-]
-
---
 
 * values are immutable by default
 {{content}}
 
---
-
 * shared state disallowed by default
 {{content}}
 
---
-
 * Mutex + owned values = guaranteed safety
+]
 
 ---
 # Thread example (broken)
@@ -339,45 +278,26 @@ fn main() {
 .right-column[
 ## Practical
 {{content}}
-]
-
---
 
 * portable
 {{content}}
 
---
-
 * modern package manager
 {{content}}
-
---
 
 * helpful error messages
 {{content}}
 
---
-
 * friendly community
+]
 
 ---
 ## Other Features
 
 --
 
-* expression-oriented
-
---
-
-* generic
-
---
-
-* traits (AKA interfaces, AKA typeclasses)
-
---
-
 * functional
+    * expression oriented
     * algebraic data types
     * pattern matching
     * lambdas
@@ -385,90 +305,144 @@ fn main() {
 
 --
 
-* hygenic macros (i.e. no name collisions)
+* generic
 
---
+* traits (AKA interfaces, AKA typeclasses)
+
+* hygenic macros and derivations (i.e. no name collisions)
 
 * open types (i.e. add new methods to existing types)
 
 ---
-## Why not C++?
+## Algebraic Data Type Examples
 
---
+```rust
+// product type
+struct Person {
+    first_name: String,
+    last_name: String,
+    birth_date: DateTime
+}
 
-* header files suck
+// sum type
+enum MessageType {
+    Hello,
+    Ping,
+    Goodbye
+}
 
---
-
-* preprocessor macros are evil
-
---
-
-* undefined behavior bites us again and again
-    * segfaults
-    * data races
-    * heisenbugs
-    * security holes
-
---
-
-* opaque error messages
-
---
-
-* no dependency management
-
+// sum of product types
+enum Message {
+    Hello(Uuid),
+    Ping(Uuid, i32),
+    Goodbye {
+      id: Uuid,
+      message: String
+      timestamp: DateTime
+    }
+}
+```
 
 ---
-## Rust drawbacks
+## Pattern Match Example
 
---
+```rust
+// sum of product types
+enum Message {
+    Hello(Uuid),
+    Ping(Uuid, i32),
+    Goodbye {
+      id: Uuid,
+      message: String
+      timestamp: DateTime
+    }
+}
+
+match message {
+    Hello(id) => {
+        eprintln!("got a Hello with id = {}", id);
+    }
+
+    Ping(id, sequence) => {
+        eprintln!("got a Ping with id = {}, sequence = {}", id, sequence);
+    }
+
+    Goodbye { id, message, timestamp } => {
+        eprintln!("got a Goodbye with id = {}, message = {}, and timestamp = {}",
+                  id, message, timestamp);
+    }
+}
+```
+
+---
+## Trait Derivation Example
+
+```rust
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
+#[serde(rename_all = "camelCase")]
+struct TaskState {
+    message_type: MessageType,
+    task_id: Uuid,
+    task_type: TaskType,
+    status: Status,
+    download_progress: Option<u64>,
+    download_total: Option<u64>,
+    error_message: Option<String>,
+}
+```
+
+---
+## Rust Drawbacks
 
 * still new and changing quickly
 
---
-
 * steep learning curve
 
---
+* primitive C++ interoperability
 
-* error handling can be awkward
+* slow compiler (though not bad compared to C++)
 
---
-
-* primitive C/C++ interoperability
-
---
-
-* slow compiler
+* people like me who won't shut up about how great it is
 
 ---
-## Kepler Local Monitoring Service
+## Rust at Mersive
 
-* watches Solstice JSON log and forwards events to the cloud
+* Kepler
 
-* separate process -> immune to Solstice crashes
+    * Local Monitoring Service (LMS)
+    * SQL Marshaling
+    * Email Service
+    * Dashboard Onboarding Service
 
-* no runtime dependencies
+* Solstice Discovery Service (SDS)
 
-* compile-time dependencies managed by cargo
+* WebRTC Server
 
----
-## Conclusion
-
-* good choice for new projects
-
-* doesn't play nice with C++ (yet)
-
-* still rough, but promising future
+* OpenControl API v2 Server
 
 ---
 ## Resources
 
-* https://rust-lang.org
+* https://doc.rust-lang.org/book/
 
 * https://play.rust-lang.org
 
 * https://reddit.com/r/rust
 
 * https://stackoverflow.com/questions/tagged/rust
+
+---
+## When shall we meet?
+
+* day?
+
+* morning, lunchtime, or end of day?
+
+---
+## Which book shall we read?
+
+* The Rust Programming Language (https://doc.rust-lang.org/book/)
+
+* Programming Rust (http://shop.oreilly.com/product/0636920040385.do)
+
+* Something else?
