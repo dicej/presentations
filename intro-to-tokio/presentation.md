@@ -233,20 +233,20 @@ Low-level cross-platform, non-blocking I/O abstraction for TCP and UDP
 
 * Old API: tokio-core, tokio-io (<0.1.5), tokio-proto
 
-* New API: tokio, tokio-io (>=0.1.5)
+* Newer API: tokio, tokio-io (>=0.1.5)
+
+* Newest API: tokio (>=0.2.0)
 
 ---
 ## Handy Tokio-based and Futures-based Libraries
 
 * Hyper: HTTP clients and servers
 
+* Warp: High-level server framework based on Hyper
+
 * Rust-WebSocket: WebSocket clients and servers
 
-* Tokio-timer: timeouts, etc.
-
 * Rdkafka: Kafka connectivity
-
-* Futures-fs: Asynchronous filesystem access
 
 ---
 ## The Future of Futures
@@ -285,7 +285,7 @@ pub fn fetch_rust_lang<C: Connect>(client: Client<C>) -> impl Future<Item = Stri
 Async/await style:
 
 ```rust
-async fn fetch_rust_lang<C: Connect>(client: Client<C>) -> Result<String, Error> {
+pub async fn fetch_rust_lang<C: Connect>(client: Client<C>) -> Result<String, Error> {
     let response = client.get("https://www.rust-lang.org".parse()?).await?;
     if response.status().is_success() {
         let body = response.body().concat2().await?;
