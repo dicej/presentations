@@ -1,0 +1,67 @@
+<mxfile host="app.diagrams.net" modified="2023-09-04T16:32:32.028Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/116.0" etag="16xEewd0wkPDWgraDgH6" version="21.7.2" type="github">
+  <diagram name="Page-1" id="5OEv2TmyY4VUbwT1ff2s">
+    <mxGraphModel dx="482" dy="355" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-1" value="app.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="360" y="420" width="50" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-2" value="native-extension.c" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="420" y="420" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-4" value="native-extension.so" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="420" y="540" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-5" value="world.wit" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="290" y="420" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-7" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="384.8" y="450" as="sourcePoint" />
+            <mxPoint x="384.8" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-8" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="319.8" y="450" as="sourcePoint" />
+            <mxPoint x="319.8" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-9" value="" style="endArrow=classic;html=1;rounded=0;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="480" y="570" as="sourcePoint" />
+            <mxPoint x="480" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-17" value="wasi-sdk" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="480" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-18" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="480" y="510" as="sourcePoint" />
+            <mxPoint x="480" y="530" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-20" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="480" y="450" as="sourcePoint" />
+            <mxPoint x="480" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-21" value="componentize-py" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="290" y="600" width="250" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-23" value="" style="endArrow=classic;html=1;rounded=0;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="415" y="630" as="sourcePoint" />
+            <mxPoint x="415" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l0BGtIQr_jQL99TtIVLY-24" value="app.wasm" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="380" y="660" width="70" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
